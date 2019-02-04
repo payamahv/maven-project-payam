@@ -46,4 +46,6 @@ local.properties
 flows/
 target/
 src/main/api/.repository/ 
-add derby
+derby.log
+
+activemq-data/
