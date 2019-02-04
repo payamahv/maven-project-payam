@@ -19,12 +19,13 @@ http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/
         <http:listener config-ref="HTTP_Listener_Configuration" path="/hello" doc:name="HTTP"/>
         <set-payload value="#[&quot;Hello Maven&quot;]" doc:name="Set Payload"/>
     </flow>
-    <flow name="maven-projectFlow">
+    <flow name="retrieveFlights">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/flights" doc:name="HTTP"/>
         <db:select config-ref="Derby_Configuration" doc:name="Database">
             <db:parameterized-query><![CDATA[SELECT * FROM flights]]></db:parameterized-query>
         </db:select>
         <object-to-string-transformer doc:name="Object to String"/>
+        <set-property propertyName="#[&quot;Content-Type&quot;]" value="#[&quot;application/json&quot;]" doc:name="Property"/>
         <jms:outbound-endpoint queue="derby.queue" connector-ref="Active_MQ" doc:name="JMS send to queue"/>
     </flow>
     <flow name="logFligths">
